@@ -3,13 +3,27 @@
 # throughout this file
 import pygame
 
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH
+from constants import *
 
 
 def main():
+    pygame.init()
     print("Starting asteroids!")
     print(f"Screen width: {SCREEN_WIDTH}")
     print(f"Screen height: {SCREEN_HEIGHT}")
+
+    # Create a screen to be shown for pygame
+    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+    running = True
+    while running:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+
+        # Set the fill of the screen to Black (0, 0, 0)
+        pygame.Surface.fill(screen, (0, 0, 0))
+        pygame.display.flip()
 
 
 if __name__ == "__main__":
