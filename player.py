@@ -10,6 +10,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.timer = 0
+        self.lives = 3
 
     # in the player class
     def triangle(self):
@@ -54,3 +55,7 @@ class Player(CircleShape):
             pygame.Vector2(0, 1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
         )
         self.timer = PLAYER_SHOOT_COOLDOWN
+
+    def respawn(self, screen):
+        self.position = (SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+        self.draw(screen)

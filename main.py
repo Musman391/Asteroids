@@ -56,31 +56,42 @@ def main():
 
         for asteroid in asteroid_group:
             if asteroid.collision(player):
-                print("Game Over!")
-                sys.exit(0)
+                player.lives -= 1
+                player.respawn(screen)
+                if player.lives <= 0:
+                    print("Game Over!")
+                    sys.exit(0)
+                break
             for bullet in bullet_group:
                 if asteroid.collision(bullet):
                     asteroid.split()
                     bullet.kill()
                     score += 1
 
-        created_text = create_text(f"Score: {score}")
-        text = created_text[0]
-        textRect = created_text[1]
+        # Create the text and text_rectangle for the score board
+        score_text = create_text(f"Score: {score}", (255, 255, 255))
+        text = score_text[0]
+        textRect = score_text[1]
+        textRect.topleft = (0, 0)
         screen.blit(text, textRect)
+
+        live_text = create_text(f"Remaining Lives: {player.lives}", (255, 255, 255))
+        l_text = live_text[0]
+        l_textRect = live_text[1]
+        l_textRect.topleft = (0, textRect.height)
+        screen.blit(l_text, l_textRect)
 
         pygame.display.flip()
 
         dt = clock.tick(60) / 1000
 
 
-def create_text(text):
+def create_text(text, color):
     font = pygame.font.SysFont("arial", 30)
-    text = font.render(text, True, (255, 255, 255))
+    text = font.render(text, True, color)
 
     # Create a rectangle to store the text and position it somewhere
     textRect = text.get_rect()
-    textRect.topleft = (0, 0)
 
     return text, textRect
 
