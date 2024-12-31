@@ -20,6 +20,9 @@ def main():
     # Create a screen to be shown for pygame
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
+    # Creating a score board to show how many asteroids destroyed
+    score = 0
+
     updatable_group = pygame.sprite.Group()
     drawable_group = pygame.sprite.Group()
     asteroid_group = pygame.sprite.Group()
@@ -59,10 +62,27 @@ def main():
                 if asteroid.collision(bullet):
                     asteroid.split()
                     bullet.kill()
+                    score += 1
+
+        created_text = create_text(f"Score: {score}")
+        text = created_text[0]
+        textRect = created_text[1]
+        screen.blit(text, textRect)
 
         pygame.display.flip()
 
         dt = clock.tick(60) / 1000
+
+
+def create_text(text):
+    font = pygame.font.SysFont("arial", 30)
+    text = font.render(text, True, (255, 255, 255))
+
+    # Create a rectangle to store the text and position it somewhere
+    textRect = text.get_rect()
+    textRect.topleft = (0, 0)
+
+    return text, textRect
 
 
 if __name__ == "__main__":
