@@ -13,8 +13,6 @@ from constants import *
 from particle import Particle
 from player import Player
 
-particle_group = pygame.sprite.Group()
-
 
 def main():
     pygame.init()
@@ -31,13 +29,13 @@ def main():
     drawable_group = pygame.sprite.Group()
     asteroid_group = pygame.sprite.Group()
     bullet_group = pygame.sprite.Group()
-    particle_g = pygame.sprite.Group()
+    particle_group = pygame.sprite.Group()
 
     Player.containers = (updatable_group, drawable_group)
     Asteroid.containers = (asteroid_group, updatable_group, drawable_group)
     AsteroidField.containers = updatable_group
     Shot.containers = (bullet_group, updatable_group, drawable_group)
-    Particle.containers = (particle_g, updatable_group, drawable_group)
+    Particle.containers = (particle_group, updatable_group, drawable_group)
 
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
@@ -70,7 +68,7 @@ def main():
                 break
             for bullet in bullet_group:
                 if asteroid.collision(bullet):
-                    spawn_particles(100, asteroid.position, screen)
+                    create_explosion(asteroid.position)
                     asteroid.split()
                     bullet.kill()
                     score += 1
@@ -89,20 +87,33 @@ def main():
         screen.blit(l_text, l_textRect)
 
         # particle_group.draw(screen)
-        particle_group.update(dt)
+        # particle_group.update(dt)
 
         pygame.display.flip()
 
         dt = clock.tick(60) / 1000
 
 
-def spawn_particles(n: int, pos: pygame.Vector2, screen):
-    for _ in range(n):
-        color = choice(("red", "green", "blue"))
-        direction = pygame.math.Vector2(uniform(-1, 1), uniform(-1, 1))
-        direciton = direction.normalize()
-        speed = randint(50, 400)
-        Particle(particle_group, pos, color, direciton, speed, screen)
+def create_explosion(pos):
+    print("Creating explosion at:", pos)
+    particle_colors = [
+        (255, 200, 50),
+        (255, 100, 0),
+        (255, 50, 0),
+        (255, 255, 200),
+        (255, 255, 255),
+    ]
+
+    num_particles = 50
+    for _ in range(num_particles):
+        angle = uniform(0, 360)
+        direction = pygame.Vector2(1, 0).rotate(angle)
+
+        speed = randint(100, 300)
+        lifetime = uniform(0.5, 1.5)
+        color = choice(particle_colors)
+
+        Particle(Particle.containers, pos, color, direction, speed, lifetime)
 
 
 def create_text(text, color):
