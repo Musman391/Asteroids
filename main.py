@@ -2,6 +2,7 @@
 # the open-source pygame library
 # throughout this file
 import sys
+from random import choice, randint, uniform
 
 import pygame
 
@@ -9,7 +10,10 @@ from asteroid import Asteroid
 from asteroidfield import AsteroidField
 from bullet import Shot
 from constants import *
+from particle import Particle
 from player import Player
+
+particle_group = pygame.sprite.Group()
 
 
 def main():
@@ -64,6 +68,7 @@ def main():
                 break
             for bullet in bullet_group:
                 if asteroid.collision(bullet):
+                    spawn_particles(100, asteroid.position)
                     asteroid.split()
                     bullet.kill()
                     score += 1
@@ -81,9 +86,21 @@ def main():
         l_textRect.topleft = (0, textRect.height)
         screen.blit(l_text, l_textRect)
 
+        particle_group.draw(screen)
+        particle_group.update(dt)
+
         pygame.display.flip()
 
         dt = clock.tick(60) / 1000
+
+
+def spawn_particles(n: int, pos: pygame.Vector2):
+    for _ in range(n):
+        color = choice(("red", "green", "blue"))
+        direction = pygame.math.Vector2(uniform(-1, 1), uniform(-1, 1))
+        direciton = direction.normalize()
+        speed = randint(50, 400)
+        Particle(particle_group, pos, color, direciton, speed)
 
 
 def create_text(text, color):
