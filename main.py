@@ -31,11 +31,13 @@ def main():
     drawable_group = pygame.sprite.Group()
     asteroid_group = pygame.sprite.Group()
     bullet_group = pygame.sprite.Group()
+    particle_g = pygame.sprite.Group()
 
     Player.containers = (updatable_group, drawable_group)
     Asteroid.containers = (asteroid_group, updatable_group, drawable_group)
     AsteroidField.containers = updatable_group
     Shot.containers = (bullet_group, updatable_group, drawable_group)
+    Particle.containers = (particle_g, updatable_group, drawable_group)
 
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
@@ -68,7 +70,7 @@ def main():
                 break
             for bullet in bullet_group:
                 if asteroid.collision(bullet):
-                    spawn_particles(100, asteroid.position)
+                    spawn_particles(100, asteroid.position, screen)
                     asteroid.split()
                     bullet.kill()
                     score += 1
@@ -86,7 +88,7 @@ def main():
         l_textRect.topleft = (0, textRect.height)
         screen.blit(l_text, l_textRect)
 
-        particle_group.draw(screen)
+        # particle_group.draw(screen)
         particle_group.update(dt)
 
         pygame.display.flip()
@@ -94,13 +96,13 @@ def main():
         dt = clock.tick(60) / 1000
 
 
-def spawn_particles(n: int, pos: pygame.Vector2):
+def spawn_particles(n: int, pos: pygame.Vector2, screen):
     for _ in range(n):
         color = choice(("red", "green", "blue"))
         direction = pygame.math.Vector2(uniform(-1, 1), uniform(-1, 1))
         direciton = direction.normalize()
         speed = randint(50, 400)
-        Particle(particle_group, pos, color, direciton, speed)
+        Particle(particle_group, pos, color, direciton, speed, screen)
 
 
 def create_text(text, color):
