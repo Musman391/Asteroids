@@ -68,7 +68,7 @@ def main():
                 break
             for bullet in bullet_group:
                 if asteroid.collision(bullet):
-                    create_explosion(asteroid.position)
+                    create_explosion(asteroid.pos)
                     asteroid.split()
                     bullet.kill()
                     score += 1
