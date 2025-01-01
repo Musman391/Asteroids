@@ -43,6 +43,11 @@ def main():
 
     asteroid_field = AsteroidField()
 
+    # Load background image
+    background_image = pygame.transform.scale(
+        pygame.image.load("images/space_background.png"), (SCREEN_WIDTH, SCREEN_HEIGHT)
+    )
+
     running = True
     while running:
         for event in pygame.event.get():
@@ -51,6 +56,9 @@ def main():
 
         # Set the fill of the screen to Black (0, 0, 0)
         pygame.Surface.fill(screen, "black")
+
+        # Load the background image to the screen
+        screen.blit(background_image, (0, 0))
 
         for drawable in drawable_group:
             drawable.draw(screen)
@@ -94,7 +102,6 @@ def main():
 
 
 def create_explosion(pos):
-    print("Creating explosion at:", pos)
     particle_colors = [
         (255, 200, 50),
         (255, 100, 0),
