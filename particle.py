@@ -9,7 +9,7 @@ from constants import *
 class Particle(pygame.sprite.Sprite):
     def __init__(self, groups, pos, color, direction, speed):
         super().__init__(groups)
-        self.pos = pos
+        self.pos = pygame.Vector2(pos)
         self.color = color
         self.direction = direction
         self.speed = speed
