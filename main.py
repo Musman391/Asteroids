@@ -35,7 +35,7 @@ def main():
     Asteroid.containers = (asteroid_group, updatable_group, drawable_group)
     AsteroidField.containers = updatable_group
     Shot.containers = (bullet_group, updatable_group, drawable_group)
-    Particle.containers = (particle_group, updatable_group, drawable_group)
+    Particle.containers = (particle_group, updatable_group)
 
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
@@ -86,8 +86,7 @@ def main():
         l_textRect.topleft = (0, textRect.height)
         screen.blit(l_text, l_textRect)
 
-        # particle_group.draw(screen)
-        # particle_group.update(dt)
+        particle_group.draw(screen)
 
         pygame.display.flip()
 
@@ -110,10 +109,9 @@ def create_explosion(pos):
         direction = pygame.Vector2(1, 0).rotate(angle)
 
         speed = randint(100, 300)
-        lifetime = uniform(0.5, 1.5)
         color = choice(particle_colors)
 
-        Particle(Particle.containers, pos, color, direction, speed, lifetime)
+        Particle(Particle.containers, pos, color, direction, speed)
 
 
 def create_text(text, color):
